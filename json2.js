@@ -1,7 +1,5 @@
 
 function getJSON() {
-    'use strict';
-
     if (typeof window.JSON === 'object') {
         return window.JSON;
     }
@@ -30,7 +28,7 @@ function getJSON() {
                 return obj.valueOf();
             default:
                 return obj;
-        };
+        }
     }
 
     var cx,
@@ -51,8 +49,7 @@ function getJSON() {
         escapable.lastIndex = 0;
         return escapable.test(string) ? '"' + string.replace(escapable, function (a) {
             var c = meta[a];
-            return typeof c === 'string'
-                ? c
+            return typeof c === 'string' ? c
                 : '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
         }) + '"' : '"' + string + '"';
     }
@@ -136,10 +133,8 @@ function getJSON() {
 // Join all of the elements together, separated with commas, and wrap them in
 // brackets.
 
-                v = partial.length === 0
-                    ? '[]'
-                    : gap
-                    ? '[\n' + gap + partial.join(',\n' + gap) + '\n' + mind + ']'
+                v = partial.length === 0 ? '[]'
+                    : gap ? '[\n' + gap + partial.join(',\n' + gap) + '\n' + mind + ']'
                     : '[' + partial.join(',') + ']';
                 gap = mind;
                 return v;
@@ -175,10 +170,8 @@ function getJSON() {
 // Join all of the member texts together, separated with commas,
 // and wrap them in braces.
 
-            v = partial.length === 0
-                ? '{}'
-                : gap
-                ? '{\n' + gap + partial.join(',\n' + gap) + '\n' + mind + '}'
+            v = partial.length === 0 ? '{}'
+                : gap ? '{\n' + gap + partial.join(',\n' + gap) + '\n' + mind + '}'
                 : '{' + partial.join(',') + '}';
             gap = mind;
             return v;
@@ -314,9 +307,7 @@ function getJSON() {
 // In the optional fourth stage, we recursively walk the new structure, passing
 // each name/value pair to a reviver function for possible transformation.
 
-            return typeof reviver === 'function'
-                ? walk({'': j}, '')
-                : j;
+            return typeof reviver === 'function' ? walk({'': j}, '') : j;
         }
 
 // If the text is not JSON parseable, then a SyntaxError is thrown.
@@ -327,3 +318,4 @@ function getJSON() {
 
     return JSON;
 }
+
