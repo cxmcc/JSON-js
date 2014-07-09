@@ -13,25 +13,24 @@ function getJSON() {
         return n < 10 ? '0' + n : n;
     }
 
-    if (typeof Date.prototype.toJSON !== 'function') {
-
-        Date.prototype.toJSON = function () {
-
-            return isFinite(this.valueOf())
-                ? this.getUTCFullYear()     + '-' +
+    function toJSON (obj) {
+        switch (Object.prototype.toString.call(obj)) {
+            case '[object Date]':
+                return isFinite(this.valueOf()) ?
+-                     this.getUTCFullYear()   + '-' +
                     f(this.getUTCMonth() + 1) + '-' +
                     f(this.getUTCDate())      + 'T' +
                     f(this.getUTCHours())     + ':' +
                     f(this.getUTCMinutes())   + ':' +
                     f(this.getUTCSeconds())   + 'Z'
                 : null;
+            case '[object String]':
+            case '[object Number]':
+            case '[object Boolean]':
+                return obj.valueOf();
+            default:
+                return obj;
         };
-
-        String.prototype.toJSON      =
-            Number.prototype.toJSON  =
-            Boolean.prototype.toJSON = function () {
-                return this.valueOf();
-            };
     }
 
     var cx,
@@ -73,9 +72,8 @@ function getJSON() {
 
 // If the value has a toJSON method, call it to obtain a replacement value.
 
-        if (value && typeof value === 'object' &&
-                typeof value.toJSON === 'function') {
-            value = value.toJSON(key);
+        if (value && typeof value === 'object') {
+            value = toJSON(value);
         }
 
 // If we were called with a replacer function, then call the replacer to
